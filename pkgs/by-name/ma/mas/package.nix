@@ -18,10 +18,6 @@ stdenvNoCC.mkDerivation (finalAttrs: {
       # nix store prefetch-file https://github.com/mas-cli/mas/releases/download/v$VERSION/mas-$VERSION-$ARCH.pkg
       sources =
         {
-          x86_64-darwin = {
-            arch = "x86_64";
-            hash = "sha256-7+iDBr4GG5bdTuAlAmMQkEkIzVgLo2+DEdravClaLtQ=";
-          };
           aarch64-darwin = {
             arch = "arm64";
             hash = "sha256-BZ9UE8H28kjqiMNdLDUUyC9madR4rBV1mLUGyj6ol3Y=";
@@ -78,7 +74,6 @@ stdenvNoCC.mkDerivation (finalAttrs: {
       zachcoyle
     ];
     platforms = [
-      "x86_64-darwin"
       "aarch64-darwin"
     ];
   };

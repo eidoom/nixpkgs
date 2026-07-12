@@ -19,11 +19,6 @@ let
         hash = "sha256-kL2XGJzTRC+AtHH4+byaR1df9EYyIriuxzawDtAFWZ4=";
         stripRoot = false;
       };
-      x86_64-darwin = fetchzip {
-        url = "https://github.com/ppy/osu/releases/download/${version}-lazer/osu.app.Intel.zip";
-        hash = "sha256-NOBKnsZpMYU6uBfVqYK3ZrPzZBQURw6bN5rr1iZG9nA=";
-        stripRoot = false;
-      };
       x86_64-linux = fetchurl {
         url = "https://github.com/ppy/osu/releases/download/${version}-lazer/osu.AppImage";
         hash = "sha256-EKmCq656djPGK5I1JqSDcTKtpbQZbO8WGWcPv+PT0q4=";
@@ -48,7 +43,6 @@ let
     mainProgram = "osu!";
     platforms = [
       "aarch64-darwin"
-      "x86_64-darwin"
       "x86_64-linux"
     ];
   };

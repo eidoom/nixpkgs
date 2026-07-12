@@ -19,7 +19,6 @@ stdenv.mkDerivation (finalAttrs: {
       {
         x86_64-linux = "1vbyh6glh4fqcx8d8x2jp88nzl9922dj709zgwhvy858s2m30ymz";
         aarch64-linux = "18gc1kyxj4j6vikxpif4a1b6l629m0lnhdzmlwx5i2v0l18drvbp";
-        x86_64-darwin = "02g431xgjw8gwa823kkxnzhg1cgswi3nlkv54mzkjxbhw856qa4z";
         aarch64-darwin = "06x8mdxmbmhg78jzsf0n83cwmp2czp74ssh616ikqf1r8v5l0h2p";
       }
       .${stdenv.hostPlatform.system} or (throw "unsupported system ${stdenv.hostPlatform.system}");
@@ -42,7 +41,6 @@ stdenv.mkDerivation (finalAttrs: {
     platforms = [
       "x86_64-linux"
       "aarch64-linux"
-      "x86_64-darwin"
       "aarch64-darwin"
     ];
     maintainers = [ lib.maintainers.matthew-levan ];
