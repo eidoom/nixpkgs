@@ -15,6 +15,7 @@
   setuptools,
   setuptools-rust,
   sqlalchemy,
+  typing-extensions,
 }:
 
 buildPythonPackage (finalAttrs: {
@@ -38,6 +39,10 @@ buildPythonPackage (finalAttrs: {
     cargo
     rustc
     rustPlatform.cargoSetupHook
+  ];
+
+  propagatedBuildInputs = [
+    typing-extensions
   ];
 
   cargoDeps = rustPlatform.fetchCargoVendor {
