@@ -108,6 +108,18 @@ optionals noSysDirs (
 
 ## 2. Patches relevant on specific platforms ####################################
 
+## Linux
+
+# Linux 7.1 removed `linux/scc.h`.
+# For GCC 14 and higher, there have already been releases with the fix.
+++ optional (is13 && targetPlatform.isLinux) (fetchpatch {
+  name = "libsanitizer-fix-with-linux-7.1-headers.patch";
+  url = "https://github.com/llvm/llvm-project/commit/3dc4fd6dd41100f051a63642f449b16324389c96.patch";
+  relative = "compiler-rt/lib";
+  extraPrefix = "libsanitizer/";
+  hash = "sha256-UYekGGOkYdBNJEp48QFPFadf3wPFJZL2t3D+iwUeGJA=";
+})
+
 ## Darwin
 
 # Here we apply patches by Iains (https://github.com/iains)
@@ -121,8 +133,8 @@ optionals noSysDirs (
       # Patches from https://github.com/iains/gcc-16-branch
       (fetchpatch {
         name = "gcc-16-darwin-aarch64-support.patch";
-        url = "https://raw.githubusercontent.com/Homebrew/homebrew-core/70e2a9e1d072fa3bc34cf41d97f4b65bede2b01e/Patches/gcc/gcc-16.1.0.diff";
-        hash = "sha256-dXfozKH//TRjAph7hUok7850hOdujTTi/iFM2HFA8fw=";
+        url = "https://raw.githubusercontent.com/Homebrew/homebrew-core/f236c82e26ee095ff098966820e40a8566f1704e/Patches/gcc/gcc-16.2.0.diff";
+        hash = "sha256-RqJfcA4mL17Wu+alLSu5SzZuPhfY6n5htufuof7xhKQ=";
       })
       # Fixes detection of Darwin deployment target.
       ./14/libgcc-darwin-detection.patch

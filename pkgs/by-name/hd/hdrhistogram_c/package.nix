@@ -22,7 +22,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   # Fix build on i686 by not trying to build AVX2 code
   # Submitted upstream: https://github.com/HdrHistogram/HdrHistogram_c/pull/143
-  ${if stdenv.hostPlatform.isi686 then "patches" else null} = [
+  patches = [
     ./no-avx2-i386.patch
   ];
 
@@ -31,6 +31,20 @@ stdenv.mkDerivation (finalAttrs: {
     cmake
     validatePkgConfig
   ];
+
+  cmakeFlags = lib.optionals stdenv.hostPlatform.isStatic [
+    (lib.cmakeBool "HDR_HISTOGRAM_BUILD_SHARED" false)
+    # Examples and tests depend on the shared library target; skip them in
+    # static builds (tests still run for the regular pkgs.hdrhistogram_c build).
+    (lib.cmakeBool "HDR_HISTOGRAM_BUILD_PROGRAMS" false)
+  ];
+
+  # The .pc file always references -lhdr_histogram, but in static builds only
+  # libhdr_histogram_static.a is produced. Provide a symlink so pkg-config
+  # consumers find the right archive.
+  postInstall = lib.optionalString stdenv.hostPlatform.isStatic ''
+    ln -s $out/lib/libhdr_histogram_static.a $out/lib/libhdr_histogram.a
+  '';
 
   doCheck = true;
 

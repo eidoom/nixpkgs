@@ -11,14 +11,14 @@
 
 buildPythonPackage (finalAttrs: {
   pname = "tuya-device-handlers";
-  version = "0.0.25";
+  version = "0.0.27";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "home-assistant-libs";
     repo = "tuya-device-handlers";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-nJX7N3PCqMmlE2KipeCKTFLn91sJmzmPTizY9cxjnb0=";
+    hash = "sha256-O5rRzUrNEQvaX4BK+n8V8/tWXHwmf0ZiJ9LEBOFY5eo=";
   };
 
   nativeBuildInputs = [

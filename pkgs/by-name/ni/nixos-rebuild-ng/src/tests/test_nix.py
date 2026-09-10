@@ -1,3 +1,4 @@
+import json
 import sys
 import textwrap
 import uuid
@@ -639,12 +640,18 @@ def test_repl(mock_run: Mock) -> None:
     mock_run.assert_called_with(["nix", "repl", "--file", Path("file.nix"), "myAttr"])
 
 
-@patch(get_qualified_name(n.run_wrapper, n), autospec=True)
+@patch(
+    get_qualified_name(n.run_wrapper, n),
+    autospec=True,
+    return_value=CompletedProcess(
+        [], 0, stdout=json.dumps({"resolvedUrl": "path:/flake.nix"})
+    ),
+)
 def test_repl_flake(mock_run: Mock) -> None:
     n.repl_flake(m.Flake("flake.nix", "myAttr"), {"nix_flag": True})
     # See nixos-rebuild-ng.tests.repl for a better test,
     # this is mostly for sanity check
-    assert mock_run.call_count == 1
+    assert mock_run.call_count == 2
 
 
 @patch(get_qualified_name(n.run_wrapper, n), autospec=True)
@@ -742,6 +749,32 @@ def test_set_profile(mock_run: Mock) -> None:
         elevate=e.NO_ELEVATOR,
     )
 
+    mock_run.reset_mock()
+    target_host = m.Remote("user@localhost", [], "ssh")
+
+    n.set_profile(
+        m.Profile("something", profile_path),
+        config_path,
+        target_host=target_host,
+        elevate=e.NO_ELEVATOR,
+    )
+
+    mock_run.assert_has_calls(
+        [
+            call(
+                ["mkdir", "-p", profile_path.parent],
+                remote=target_host,
+                elevate=e.NO_ELEVATOR,
+            ),
+            call(
+                ["nix-env", "-p", profile_path, "--set", config_path],
+                remote=target_host,
+                elevate=e.NO_ELEVATOR,
+            ),
+        ]
+    )
+
+    mock_run.reset_mock()
     mock_run.return_value = CompletedProcess([], 1)
 
     with pytest.raises(m.NixOSRebuildError) as exc:

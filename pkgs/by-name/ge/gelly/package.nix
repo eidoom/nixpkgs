@@ -19,16 +19,16 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "gelly";
-  version = "1.9.4";
+  version = "1.11.1";
 
   src = fetchFromGitHub {
     owner = "Fingel";
     repo = "gelly";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-GYMLV4hffaIbqUp1b5ERo2QQqiKRlHe9oXfq+wNH/hM=";
+    hash = "sha256-Won8IYaDbd6NljLZU+Ih/7gnUmXnhdpoCanwBbloVFU=";
   };
 
-  cargoHash = "sha256-CsmcXlkOec/KJ59Ng7MyGsfjWQ80YyV6MztRFULmvDA=";
+  cargoHash = "sha256-yCJydR4BGd7HcKnOl4bquoD3QzI4l5WBrOeXiF5IdHI=";
 
   nativeBuildInputs = [
     pkg-config

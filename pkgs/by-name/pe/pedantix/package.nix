@@ -8,17 +8,17 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "pedantix";
-  version = "1.0.0";
+  version = "1.2.1";
   __structuredAttrs = true;
 
   src = fetchFromGitHub {
     owner = "Swarsel";
     repo = "pedantix";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-ibouDGnFOfkeUvM9oOL+0a9T93jSKqUfWCGY8CfpkTg=";
+    hash = "sha256-WqCiIOFaVZ6+pVBF+fIZlOEb4N+cHCJZBPQ8Rj2OEh0=";
   };
 
-  cargoHash = "sha256-PwmWZEPQFknvBnK/Rtt9gl4wWq8c6hjfrcMfbhqldKw=";
+  cargoHash = "sha256-ay4rANqOby+/VM+JWbXcd0JQCcZuv8TjZv3d9vcFgfI=";
 
   doInstallCheck = true;
   nativeInstallCheckInputs = [ versionCheckHook ];

@@ -10,6 +10,9 @@
   pkg-config,
   wayland-scanner,
   makeBinaryWrapper,
+  autoAddDriverRunpath,
+  installShellFiles,
+  versionCheckHook,
 
   # libraries
   cairo,
@@ -20,9 +23,12 @@
   harfbuzz,
   jemalloc,
   libGL,
+  libical,
+  libjxl,
   libqalculate,
   librsvg,
   libsecret,
+  libsndfile,
   libsodium,
   libwebp,
   libxkbcommon,
@@ -37,6 +43,7 @@
   stb,
   systemdLibs,
   tomlplusplus,
+  tzdata,
   wayland,
   wayland-protocols,
   wireplumber,
@@ -45,29 +52,17 @@
   gitMinimal,
 }:
 
-let
-  # nixpkgs stb doesn't have stb_image_resize2.h which noctalia needs
-  stb' = stb.overrideAttrs {
-    version = "0-unstable-2025-10-26";
-    src = fetchFromGitHub {
-      owner = "nothings";
-      repo = "stb";
-      rev = "f1c79c02822848a9bed4315b12c8c8f3761e1296";
-      hash = "sha256-BlyXJtAI7WqXCTT3ylww8zoG0hBxaojJnQDvdQOXJPE=";
-    };
-  };
-in
 stdenv.mkDerivation (finalAttrs: {
   __structuredAttrs = true;
 
   pname = "noctalia";
-  version = "5.0.0-beta.4";
+  version = "5.0.1";
 
   src = fetchFromGitHub {
     owner = "noctalia-dev";
     repo = "noctalia";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-jXz2vFHgidbyU46ScROLSuBIhsqqtyqNu2M0tmGX/FA=";
+    hash = "sha256-diS3b69rt/IqehH/8Tsd8/JEQmogVc1ml6FP+iTwBzg=";
   };
 
   strictDeps = true;
@@ -78,6 +73,8 @@ stdenv.mkDerivation (finalAttrs: {
     pkg-config
     wayland-scanner
     makeBinaryWrapper
+    autoAddDriverRunpath
+    installShellFiles
   ];
 
   buildInputs = [
@@ -89,9 +86,12 @@ stdenv.mkDerivation (finalAttrs: {
     harfbuzz
     jemalloc
     libGL
+    libical
+    libjxl
     libqalculate
     librsvg
     libsecret
+    libsndfile
     libsodium
     libwebp
     libxkbcommon
@@ -103,7 +103,7 @@ stdenv.mkDerivation (finalAttrs: {
     pipewire
     polkit
     sdbus-cpp_2
-    stb'
+    stb
     systemdLibs
     tomlplusplus
     wayland
@@ -111,7 +111,19 @@ stdenv.mkDerivation (finalAttrs: {
     wireplumber
   ];
 
+  mesonFlags = [
+    (lib.mesonEnable "tests" true)
+    (lib.mesonEnable "jemalloc" (!stdenv.hostPlatform.isMusl))
+  ];
+
   mesonBuildType = "release";
+
+  postInstall = lib.optionalString (stdenv.buildPlatform.canExecute stdenv.hostPlatform) ''
+    installShellCompletion --cmd noctalia \
+      --bash <($out/bin/noctalia completions bash) \
+      --fish <($out/bin/noctalia completions fish) \
+      --zsh <($out/bin/noctalia completions zsh)
+  '';
 
   # plugins are installed by cloning their repos
   postFixup = ''
@@ -119,19 +131,25 @@ stdenv.mkDerivation (finalAttrs: {
       --prefix PATH : ${lib.makeBinPath [ gitMinimal ]}
   '';
 
-  # remove --version=unstable once 5.0.0 stable is released
-  passthru.updateScript = nix-update-script {
-    extraArgs = [
-      "--version=unstable"
-      "--version-regex"
-      "v(5\\..*)"
-    ];
-  };
+  doCheck = stdenv.buildPlatform.canExecute stdenv.hostPlatform;
+
+  nativeCheckInputs = [
+    tzdata
+    gitMinimal
+  ];
+
+  doInstallCheck = stdenv.buildPlatform.canExecute stdenv.hostPlatform;
+
+  nativeInstallCheckInputs = [
+    versionCheckHook
+  ];
+
+  passthru.updateScript = nix-update-script { };
 
   meta = {
-    description = "A sleek, customizable desktop shell crafted for Wayland.";
-    homepage = "https://github.com/noctalia-dev/noctalia";
-    changelog = "https://github.com/noctalia-dev/noctalia/releases/tag/v${finalAttrs.version}";
+    description = "Sleek, customizable desktop shell crafted for Wayland";
+    homepage = "https://noctalia.dev";
+    changelog = "https://noctalia.dev/changelogs#v${finalAttrs.version}";
     license = with lib.licenses; [
       mit
       asl20 # material_color_utilities is Apache 2.0

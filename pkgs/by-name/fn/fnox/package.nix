@@ -9,21 +9,22 @@
   dbus,
   udev,
   nix-update-script,
+  cacert,
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
   __structuredAttrs = true;
   pname = "fnox";
-  version = "1.31.0";
+  version = "1.34.1";
 
   src = fetchFromGitHub {
     owner = "jdx";
     repo = "fnox";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-BwuMuiJiC5QbtlfZz/aqSXQmjyf0jUWv2sNdKEK3LJY=";
+    hash = "sha256-OZ9WVPsx6McCk6ONuUZ8Ws7f5WHlEMUOEYV457jexAs=";
   };
 
-  cargoHash = "sha256-vU1LA6vvNpLFRXj07WmtCoWDdJezqMoI/t7q7E77JUk=";
+  cargoHash = "sha256-QRRIZOjqYdVsK04vjyLRhbI1jsV2oekfORswbDYQBIg=";
 
   nativeBuildInputs = [
     perl
@@ -34,6 +35,9 @@ rustPlatform.buildRustPackage (finalAttrs: {
     dbus
     udev
   ];
+
+  nativeCheckInputs = [ cacert ];
+  env.SSL_CERT_FILE = "${cacert}/etc/ssl/certs/ca-bundle.crt";
 
   passthru = {
     tests.version = testers.testVersion { package = finalAttrs.finalPackage; };

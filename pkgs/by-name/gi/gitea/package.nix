@@ -30,7 +30,7 @@ let
       inherit (finalAttrs) pname version src;
       inherit pnpm;
       fetcherVersion = 4;
-      hash = "sha256-VAXSj+AYV6uEdCAD/sEzeydqn4cqNL+ITfrGq41jaLI=";
+      hash = "sha256-rduD3GqgdUlF95HTnKe8smToyHop4RrO6QDTRzh2RCk=";
     };
 
     nativeBuildInputs = [
@@ -53,13 +53,13 @@ let
 in
 buildGoModule (finalAttrs: {
   pname = "gitea";
-  version = "1.27.0";
+  version = "1.27.3";
 
   src = fetchFromGitHub {
     owner = "go-gitea";
     repo = "gitea";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-Pn1V4U43d4lTKRO7AftgKDDWls2z+3IeZgPBaKZlbow=";
+    hash = "sha256-91hF7VpMDHyBj1dBlsVC/b3IhNAnUwK/qhZb77GPEnc=";
   };
 
   proxyVendor = true;
@@ -130,7 +130,9 @@ buildGoModule (finalAttrs: {
       lib.warn "gitea.passthru.data-compressed is deprecated. Use \"compressDrvWeb gitea.data\"."
         (compressDrvWeb gitea.data { });
 
-    tests = nixosTests.gitea;
+    tests = {
+      inherit (nixosTests) gitea gitea-actions-runner;
+    };
   };
 
   meta = {

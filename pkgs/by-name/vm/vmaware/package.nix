@@ -8,30 +8,26 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "vmaware";
-  version = "2.8.0";
+  version = "2.8.1";
 
   strictDeps = true;
   __structuredAttrs = true;
 
   src = fetchFromGitHub {
-    owner = "kernelwernel";
+    owner = "NotRequiem";
     repo = "VMAware";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-KPjIk5nm27RcxGg3owfLVt+b1sL0y90IPPgeGv7fTgQ=";
+    hash = "sha256-hSnN3GIowHbL+SEgsnx1jr7busZ9BPw38ODhSw9lw6I=";
   };
 
   nativeBuildInputs = [ cmake ];
-
-  cmakeFlags = [
-    "-DCMAKE_BUILD_TYPE=Release"
-  ];
 
   passthru.updateScript = nix-update-script { };
 
   meta = {
     description = "Cross-platform C++ library and CLI tool for virtual machine detection";
-    homepage = "https://github.com/kernelwernel/VMAware";
-    changelog = "https://github.com/kernelwernel/VMAware/releases/tag/v${finalAttrs.version}";
+    homepage = "https://github.com/NotRequiem/VMAware";
+    changelog = "https://github.com/NotRequiem/VMAware/releases/tag/v${finalAttrs.version}";
     license = lib.licenses.mit;
     maintainers = with lib.maintainers; [ patrickdag ];
     platforms = lib.platforms.linux;

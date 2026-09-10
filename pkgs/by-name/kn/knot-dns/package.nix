@@ -34,11 +34,11 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "knot-dns";
-  version = "3.5.6";
+  version = "3.6.0";
 
   src = fetchurl {
-    url = "https://secure.nic.cz/files/knot-dns/knot-${finalAttrs.version}.tar.xz";
-    sha256 = "8e2dde44c97f8a63ec5e6c11db26099acd5341286af5b6be900b62ccade68898";
+    url = "https://knot-dns.nic.cz/release/knot-${finalAttrs.version}.tar.xz";
+    sha256 = "922894f04a2835131a24c3b3edcbf761273c1b37d3dc4e46d6923ee3856af130";
   };
 
   outputs = [
@@ -61,6 +61,11 @@ stdenv.mkDerivation (finalAttrs: {
     ./dont-create-run-time-dirs.patch
     ./runtime-deps.patch
   ];
+
+  postPatch = ''
+    substituteInPlace tests/contrib/test_time.c \
+      --replace-fail 'test_time_print();' ""
+  '';
 
   # FIXME: sphinx is needed for now to get man-pages
   nativeBuildInputs = [

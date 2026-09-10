@@ -10,16 +10,16 @@
 
 buildGoModule (finalAttrs: {
   pname = "roxctl";
-  version = "4.11.1";
+  version = "4.11.3";
 
   src = fetchFromGitHub {
     owner = "stackrox";
     repo = "stackrox";
     rev = finalAttrs.version;
-    sha256 = "sha256-1+I/piqSFIJsy3PCSs1z7BNmi4Sz+SeuVfAoi0k11IU=";
+    sha256 = "sha256-JURLJ4tEWiknFOkZXzVdpj17c/8ANm/8PA0eOWZzO2o=";
   };
 
-  vendorHash = "sha256-mNZCsk7qZVej7yN8z/gAYWgSheCBj2sTF7pkmJbkW1w=";
+  vendorHash = "sha256-bqfRqyP4bBUxk/TKfdt+ghFRBqGTbuynjUWcJFsRyz8=";
 
   nativeBuildInputs = [ installShellFiles ];
 

@@ -8,16 +8,16 @@
 
 buildNpmPackage rec {
   pname = "lint-staged";
-  version = "17.1.0";
+  version = "17.5.0";
 
   src = fetchFromGitHub {
     owner = "lint-staged";
     repo = "lint-staged";
     rev = "v${version}";
-    hash = "sha256-Gfrkqrm0CajvZllYMGxDEOCzXZijb3hMTovlvEJuepw=";
+    hash = "sha256-kRQDWJyyRFNxrdndOs2YYWetihwu+skTOCZ/dw5TzLs=";
   };
 
-  npmDepsHash = "sha256-615sJZU5ZXfern6CJtG8ILtaldF+A9jirJuFlm9X8wM=";
+  npmDepsHash = "sha256-4yMbJFVgcVoo9AWEfJI+OfBoE4Y35rUnjFKuZ9g56/o=";
 
   dontNpmBuild = true;
 

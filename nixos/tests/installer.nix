@@ -684,6 +684,9 @@ let
       nodes =
         let
           commonConfig = {
+            # disabled by default. See all-tests.nix / tag(no-nix-by-default)
+            nix.enable = true;
+
             # builds stuff in the VM, needs more juice
             virtualisation.diskSize = 12 * 1024;
             virtualisation.cores = 8;
@@ -748,6 +751,7 @@ let
                   kbd.dev
                   kmod.dev
                   libarchive.dev
+                  libcap-text-verifier
                   libxml2.bin
                   libxslt.bin
                   nixos-artwork.wallpapers.simple-dark-gray-bottom

@@ -7,13 +7,13 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "nextvi";
-  version = "7.0";
+  version = "7.5";
 
   src = fetchFromGitHub {
     owner = "kyx0r";
     repo = "nextvi";
     tag = finalAttrs.version;
-    hash = "sha256-corF/cPmkCkpqg2UVLrMHL33pgp3ffBohbQzq95b+Ws=";
+    hash = "sha256-TB2zRgZ7bZhmdzPog5CSUYXBo56K+iSX7EAcI2NxP18=";
   };
 
   nativeBuildInputs = [ installShellFiles ];

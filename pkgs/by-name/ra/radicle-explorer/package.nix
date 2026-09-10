@@ -2,44 +2,24 @@
   lib,
   buildNpmPackage,
   fetchFromRadicle,
-  fetchFromGitHub,
   writers,
   _experimental-update-script-combinators,
   unstableGitUpdater,
   nix-update-script,
 }:
 
-let
-  # radicle-explorer bundles these freely available Emoji assets, but does not
-  # redistribute them.
-  twemojiAssets = fetchFromGitHub {
-    owner = "twitter";
-    repo = "twemoji";
-    tag = "v14.0.2";
-    hash = "sha256-YoOnZ5uVukzi/6bLi22Y8U5TpplPzB7ji42l+/ys5xI=";
-    meta.license = lib.licenses.cc-by-40;
-  };
-in
-
 buildNpmPackage (finalAttrs: {
   pname = "radicle-explorer";
-  version = "0-unstable-2026-07-21";
+  version = "0-unstable-2026-09-03";
 
   src = fetchFromRadicle {
     seed = "seed.radicle.dev";
     repo = "z4V1sjrXqjvFdnCUbxPFqd5p4DtH5";
-    rev = "2afde78941226a6d791f8a7392713864457ec772";
-    hash = "sha256-fEfr2jt1NY7rFt2/BO61ukRYEpyH4ATsuheAz8MdKpY=";
+    rev = "fb11e4d9c2c758468b9dca5c615f2392fb011c6e";
+    hash = "sha256-X8YRmyK8VyhmRMnKEiIhbiNyQ/fy4U9FgcIARDz+MfI=";
   };
 
-  npmDepsHash = "sha256-74r7cyggbuva9XpW++HdAHHFqEBJ6BgNuJJUR+8HE4c=";
-
-  postPatch = ''
-    patchShebangs --build ./scripts
-    : >scripts/install-twemoji-assets
-
-    cp -r "${twemojiAssets}/assets/svg" public/twemoji
-  '';
+  npmDepsHash = "sha256-m+md3XIjn4SpZ3vp5STDFAKU3QSs0maFUm3Ll5DLghc=";
 
   preBuild = ''
     if [[ $configFile ]]; then
