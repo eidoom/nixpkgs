@@ -316,6 +316,7 @@
   ./programs/qgroundcontrol.nix
   ./programs/qt5ct.nix
   ./programs/quark-goldleaf.nix
+  ./programs/renderdoc.nix
   ./programs/rog-control-center.nix
   ./programs/rush.nix
   ./programs/rust-motd.nix
@@ -528,12 +529,14 @@
   ./services/continuous-integration/buildbot/worker.nix
   ./services/continuous-integration/buildkite-agents.nix
   ./services/continuous-integration/forgejo-runner.nix
+  ./services/continuous-integration/garm.nix
   ./services/continuous-integration/gitea-actions-runner.nix
   ./services/continuous-integration/github-runners.nix
   ./services/continuous-integration/gitlab-runner/runner.nix
   ./services/continuous-integration/gocd-agent/default.nix
   ./services/continuous-integration/gocd-server/default.nix
   ./services/continuous-integration/hercules-ci-agent/default.nix
+  ./services/continuous-integration/hydra/builder.nix
   ./services/continuous-integration/hydra/default.nix
   ./services/continuous-integration/jenkins/default.nix
   ./services/continuous-integration/jenkins/job-builder.nix
@@ -641,6 +644,7 @@
   ./services/development/turborepo-remote-cache.nix
   ./services/development/vsmartcard-vpcd.nix
   ./services/development/zammad.nix
+  ./services/display-managers/airlock.nix
   ./services/display-managers/cosmic-greeter.nix
   ./services/display-managers/default.nix
   ./services/display-managers/dms-greeter.nix
@@ -855,6 +859,7 @@
   ./services/misc/anki-sync-server.nix
   ./services/misc/apache-kafka.nix
   ./services/misc/atuin.nix
+  ./services/misc/aurral.nix
   ./services/misc/autobrr.nix
   ./services/misc/autofs.nix
   ./services/misc/autorandr.nix
@@ -910,6 +915,7 @@
   ./services/misc/gitolite.nix
   ./services/misc/gitweb.nix
   ./services/misc/gollum.nix
+  ./services/misc/gophernicus.nix
   ./services/misc/gotenberg.nix
   ./services/misc/gpsd.nix
   ./services/misc/graphical-desktop.nix
@@ -956,6 +962,7 @@
   ./services/misc/nzbhydra2.nix
   ./services/misc/octoprint.nix
   ./services/misc/ollama.nix
+  ./services/misc/ollaya.nix
   ./services/misc/ombi.nix
   ./services/misc/omnom.nix
   ./services/misc/open-webui.nix
@@ -966,7 +973,6 @@
   ./services/misc/paisa.nix
   ./services/misc/paperless.nix
   ./services/misc/persistent-evdev.nix
-  ./services/misc/pghero.nix
   ./services/misc/pinchflat.nix
   ./services/misc/pinnwand.nix
   ./services/misc/plex.nix
@@ -1001,7 +1007,6 @@
   ./services/misc/serviio.nix
   ./services/misc/shelfmark.nix
   ./services/misc/shoko.nix
-  ./services/misc/sickbeard.nix
   ./services/misc/snapper.nix
   ./services/misc/soft-serve.nix
   ./services/misc/spice-autorandr.nix
@@ -1257,7 +1262,6 @@
   ./services/networking/gnunet.nix
   ./services/networking/go-autoconfig.nix
   ./services/networking/go-camo.nix
-  ./services/networking/go-neb.nix
   ./services/networking/go-shadowsocks2.nix
   ./services/networking/gobgpd.nix
   ./services/networking/godns.nix
@@ -1282,6 +1286,7 @@
   ./services/networking/imaginary.nix
   ./services/networking/inadyn.nix
   ./services/networking/inspircd.nix
+  ./services/networking/iocaine.nix
   ./services/networking/iodine.nix
   ./services/networking/iperf3.nix
   ./services/networking/ircd-hybrid/default.nix
@@ -1352,6 +1357,7 @@
   ./services/networking/nebula-lighthouse-service.nix
   ./services/networking/nebula.nix
   ./services/networking/netbird.nix
+  ./services/networking/netbird/netbird-relay.nix
   ./services/networking/netbird/server.nix
   ./services/networking/netclient.nix
   ./services/networking/netfoil.nix
@@ -1544,6 +1550,7 @@
   ./services/search/manticore.nix
   ./services/search/meilisearch.nix
   ./services/search/nominatim.nix
+  ./services/search/opensearch-dashboards.nix
   ./services/search/opensearch.nix
   ./services/search/qdrant.nix
   ./services/search/quickwit.nix
@@ -1702,6 +1709,7 @@
   ./services/web-apps/drasl.nix
   ./services/web-apps/drupal.nix
   ./services/web-apps/echoip.nix
+  ./services/web-apps/elk.nix
   ./services/web-apps/engelsystem.nix
   ./services/web-apps/ente.nix
   ./services/web-apps/fediwall.nix
@@ -1728,6 +1736,8 @@
   ./services/web-apps/gotosocial.nix
   ./services/web-apps/goupile.nix
   ./services/web-apps/grav.nix
+  ./services/web-apps/greenlight.nix
+  ./services/web-apps/grist.nix
   ./services/web-apps/grocy.nix
   ./services/web-apps/guacamole-client.nix
   ./services/web-apps/guacamole-server.nix
@@ -1739,7 +1749,6 @@
   ./services/web-apps/hledger-web.nix
   ./services/web-apps/homebox.nix
   ./services/web-apps/homer.nix
-  ./services/web-apps/honk.nix
   ./services/web-apps/icingaweb2/icingaweb2.nix
   ./services/web-apps/icingaweb2/module-monitoring.nix
   ./services/web-apps/ifm.nix
@@ -1828,7 +1837,6 @@
   ./services/web-apps/pretalx.nix
   ./services/web-apps/pretix.nix
   ./services/web-apps/privatebin.nix
-  ./services/web-apps/prosody-filer.nix
   ./services/web-apps/readeck.nix
   ./services/web-apps/remark42.nix
   ./services/web-apps/reposilite.nix

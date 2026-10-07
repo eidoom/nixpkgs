@@ -34,6 +34,7 @@
   lld,
   testers,
   writableTmpDirAsHomeHook,
+  bubblewrap,
 
   buildRemoteServer ? true,
 }:
@@ -98,7 +99,7 @@ let
 in
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "zed-editor";
-  version = "1.19.2";
+  version = "1.22.0";
 
   outputs = [
     "out"
@@ -111,7 +112,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     owner = "zed-industries";
     repo = "zed";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-AhM56IZJ3z70NPtn5RjjbzdZ1ZrxrZ4iUQ5dqAX9m8A=";
+    hash = "sha256-XdWQjtdkbSqyEP/c2bGycPFEHS37tonSzTeVxyK1AHw=";
   };
 
   postPatch = ''
@@ -134,7 +135,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
       --replace-fail 'builder.include(&glib_path_config);' 'builder.include("${lib.getLib glib}/lib/glib-2.0/include");'
   '';
 
-  cargoHash = "sha256-fBcg6qTcxr0eCpsw/nYL8v8Ne5WTeyKNB7CTTDK+P/E=";
+  cargoHash = "sha256-9EjEMN+oyUE2HdhC42dxPk4q20qhB49qRBTqg4iY/b8=";
 
   __structuredAttrs = true;
 
@@ -230,7 +231,12 @@ rustPlatform.buildRustPackage (finalAttrs: {
         wayland
       ]
     }
-    wrapProgram $out/libexec/zed-editor --suffix PATH : ${lib.makeBinPath [ nodejs ]}
+    wrapProgram $out/libexec/zed-editor --suffix PATH : ${
+      lib.makeBinPath [
+        nodejs
+        bubblewrap # required for sandboxing
+      ]
+    }
   '';
 
   nativeCheckInputs = [

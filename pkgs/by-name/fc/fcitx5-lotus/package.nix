@@ -12,7 +12,6 @@
   kdePackages,
   libinput,
   librsvg,
-  libx11,
   nix-update-script,
   pkg-config,
   python3,
@@ -31,14 +30,28 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "fcitx5-lotus";
-  version = "3.5.7";
+  version = "3.6.0";
 
   src = fetchFromGitHub {
     owner = "LotusInputMethod";
     repo = "fcitx5-lotus";
-    rev = "v${finalAttrs.version}";
-    hash = "sha256-IQFklfLrccVm/SW8dpcplbWfoYJNoS4nMMdkuOzOgdo=";
+    tag = "v${finalAttrs.version}";
+    hash = "sha256-q0NT54HFH3grCppiWR00taATOSUv7t3PEaTlbcIehlg=";
     fetchSubmodules = true;
+  };
+
+  vendorDir = finalAttrs.passthru."go-modules";
+
+  passthru = {
+    "go-modules" =
+      (buildGoModule {
+        pname = "fcitx5-lotus-go-modules";
+        inherit (finalAttrs) version src;
+        modRoot = "bamboo";
+        vendorHash = "sha256-p9YpDSRtOkYa6cZHzWOfcYKaFb5LXXfXXnQo9xTEnWI=";
+      }).goModules;
+
+    updateScript = nix-update-script { };
   };
 
   nativeBuildInputs = [
@@ -57,7 +70,6 @@ stdenv.mkDerivation (finalAttrs: {
     fcitx5
     kdePackages.extra-cmake-modules
     libinput
-    libx11
     pythonEnv
     qt6.qtbase
     qt6.qtsvg
@@ -65,17 +77,10 @@ stdenv.mkDerivation (finalAttrs: {
   ];
 
   strictDeps = true;
+
   __structuredAttrs = true;
 
   dontWrapQtApps = true;
-
-  vendorDir =
-    (buildGoModule {
-      pname = "fcitx5-lotus-go-modules";
-      inherit (finalAttrs) version src;
-      modRoot = "bamboo";
-      vendorHash = "sha256-Y8sh1PqmBjXko2X9YOxwCrtrGLQ565aewrq4sRvLdpw=";
-    }).goModules;
 
   preConfigure = ''
     export GOCACHE=$TMPDIR/go-cache
@@ -94,9 +99,6 @@ stdenv.mkDerivation (finalAttrs: {
       --replace-fail 'strcmp(exe_path, "/usr/bin/fcitx5") == 0' \
                      '(strncmp(exe_path, "/nix/store/", 11) == 0 && strlen(exe_path) >= 11 && strcmp(exe_path + strlen(exe_path) - 11, "/bin/fcitx5") == 0)'
 
-    substituteInPlace src/lotus-engine.cpp \
-      --replace-fail '/usr/share/icons/hicolor' '/run/current-system/sw/share/icons/hicolor'
-
     substituteInPlace settings-gui/i18n.py \
       --replace-fail 'localedir = "/usr/share/locale"' 'localedir = "'"$out"'/share/locale"'
 
@@ -109,7 +111,6 @@ stdenv.mkDerivation (finalAttrs: {
       --replace-fail "/usr/bin/setfacl" "${acl}/bin/setfacl"
 
     substituteInPlace $out/lib/systemd/system/fcitx5-lotus-server@.service \
-      --replace-fail "/usr/bin/setfacl" "${acl}/bin/setfacl" \
       --replace-fail "/usr/bin/fcitx5-lotus-server" "$out/bin/fcitx5-lotus-server"
   '';
 
@@ -118,8 +119,6 @@ stdenv.mkDerivation (finalAttrs: {
     wrapQtApp $out/bin/fcitx5-lotus-settings \
       --prefix XDG_DATA_DIRS : "${hicolor-icon-theme}/share"
   '';
-
-  passthru.updateScript = nix-update-script { };
 
   meta = {
     description = "Vietnamese input method engine for Fcitx5";

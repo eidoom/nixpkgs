@@ -7,12 +7,12 @@
   enableDeno ? false,
 }:
 let
-  version = "0-unstable-2026-08-30";
+  version = "0-unstable-2026-09-21";
   src = fetchFromGitHub {
     owner = "flatpak";
     repo = "flatpak-builder-tools";
-    rev = "1fc32195e3e60fe5c97f0af646dec7a99df5962b";
-    hash = "sha256-Yc/fWlwhN38mbejTlM7XG1uY/WpREwETXwWWEMbv7tc=";
+    rev = "41c20aa10819cdb2a4f3ca171758a96d1955c018";
+    hash = "sha256-h9FAazZz+oOaipXeO1guP3pNMFzs05cYmu+PqCnc39w=";
   };
 in
 buildEnv {

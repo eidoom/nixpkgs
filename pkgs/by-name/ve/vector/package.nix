@@ -28,16 +28,16 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "vector";
-  version = "0.58.0";
+  version = "0.59.0";
 
   src = fetchFromGitHub {
     owner = "vectordotdev";
     repo = "vector";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-H/bSlSWdNN94uCP0tpjyf/VEdoCb/PUALTknT/UNdfg=";
+    hash = "sha256-lnNlywrGMWaaLw+03m9qVGZoctcSdyw2zWl+5RaUBGg=";
   };
 
-  cargoHash = "sha256-HRf4sBVx8vVkDfxeVsI2Z4J6OurIolqX0oCB+nxShRs=";
+  cargoHash = "sha256-C8Lqi3QSooXdDmSYYER9SgGkkcmgynRoy9LffmSJZns=";
 
   nativeBuildInputs = [
     pkg-config
@@ -85,6 +85,11 @@ rustPlatform.buildRustPackage (finalAttrs: {
     CARGO_PROFILE_RELEASE_LTO = "fat";
     CARGO_PROFILE_RELEASE_CODEGEN_UNITS = "1";
   };
+
+  # Fix rust 1.98 compatibility
+  postPatch = ''
+    substituteInPlace src/trace.rs --replace-fail 'use futures::StreamExt as _;' ""
+  '';
 
   doCheck = true;
   checkType = "debug";

@@ -16,13 +16,13 @@
 let
   pnpm = pnpm_11;
 
-  version = "0.36.0";
+  version = "0.38.1";
 
   src = fetchFromGitHub {
     owner = "vercel-labs";
     repo = "agent-browser";
     tag = "v${version}";
-    hash = "sha256-HzX1M1Gdd9N0iYxiEGuWrV3fc7yNevGiOvc/0csttZA=";
+    hash = "sha256-C+XplCHOdFDQGPUnrCDuq7U4LkAX0QB3fC4uVA8o11w=";
   };
 
   # The Rust CLI embeds the dashboard UI via RustEmbed at compile time.
@@ -83,7 +83,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   sourceRoot = "${finalAttrs.src.name}/cli";
 
-  cargoHash = "sha256-6xphNOYi+tJvFlprY8DCVw1XzVFapqFQfeIy0w2pyCs=";
+  cargoHash = "sha256-Ei26Iz0qMqayucULLCSwN+fjw0VJ3S2L2A4vGhfYGqI=";
 
   # Place the pre-built dashboard where RustEmbed expects it
   postUnpack = ''
@@ -103,12 +103,8 @@ rustPlatform.buildRustPackage (finalAttrs: {
     writableTmpDirAsHomeHook
   ];
 
-  # Flaky test: reads the AGENT_BROWSER_CDP env variable without using the
-  # shared test lock.
-  checkFlags = [
-    "--skip"
-    "native::actions::tests::test_execute_unknown_command"
-  ];
+  # Some tests use a shared state that makes them flaky when run concurrently.
+  dontUseCargoParallelTests = true;
 
   __darwinAllowLocalNetworking = true;
 
@@ -135,7 +131,10 @@ rustPlatform.buildRustPackage (finalAttrs: {
     license = lib.licenses.asl20;
     sourceProvenance = with lib.sourceTypes; [ fromSource ];
     platforms = lib.platforms.linux ++ lib.platforms.darwin;
-    maintainers = with lib.maintainers; [ codgician ];
+    maintainers = with lib.maintainers; [
+      baptiste0928
+      codgician
+    ];
     mainProgram = "agent-browser";
   };
 })

@@ -7,6 +7,10 @@
   writeShellScriptBin,
   zig_0_16,
   nix-update-script,
+  bats,
+  python3,
+  unixtools,
+  versionCheckHook,
 }:
 let
   zig = zig_0_16;
@@ -24,7 +28,7 @@ let
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "zmx";
-  version = "0.8.0";
+  version = "0.8.1";
   __structuredAttrs = true;
   strictDeps = true;
 
@@ -32,7 +36,7 @@ stdenv.mkDerivation (finalAttrs: {
     owner = "neurosnap";
     repo = "zmx";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-5z7XWEZ+6P4AuzagHQdszr8vWoymbmL8TakVz0N/2DU=";
+    hash = "sha256-0gxaoup7boFMm4NQCQ8mHusX1oS8h/MacFxhSPLi2XM=";
   };
 
   zigDeps = zig.fetchDeps {
@@ -58,8 +62,19 @@ stdenv.mkDerivation (finalAttrs: {
 
   doCheck = true;
 
+  nativeCheckInputs = [
+    # only needed for postCheck
+    bats
+    python3
+    unixtools.hostname
+  ];
+
   preCheck = ''
     export ZMX_DIR="$TMPDIR/zmx-test"
+  '';
+
+  postCheck = ''
+    bats test
   '';
 
   postInstall = lib.optionalString (stdenv.buildPlatform.canExecute stdenv.hostPlatform) ''
@@ -68,6 +83,9 @@ stdenv.mkDerivation (finalAttrs: {
       --zsh <($out/bin/zmx completions zsh) \
       --fish <($out/bin/zmx completions fish)
   '';
+
+  doInstallCheck = true;
+  nativeInstallCheckInputs = [ versionCheckHook ];
 
   passthru.updateScript = nix-update-script { };
 
